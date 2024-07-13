@@ -1,0 +1,47 @@
+.dataTable {
+  display: grid;
+  gap: 20px;
+  // grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-auto-rows: minmax(180px, auto);
+  padding: 30px;
+  border-radius: 20px;
+  background-color: #f8f9fa; /* Light background to distinguish from main content */
+}
+
+.dataTable .dataGrid {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Slight shadow for elevation */
+}
+
+.dataTable .dataGrid .MuiDataGrid-toolbarContainer {
+  display: flex;
+  justify-content: flex-end; /* Ensure toolbar is aligned to the right */
+}
+
+.dataTable .dataGrid img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 10px; /* Add some space between image and text */
+}
+
+.dataTable .dataGrid .action {
+  display: flex;
+  gap: 15px;
+  align-items: center; /* Center icons vertically */
+}
+
+.dataTable .dataGrid .action img {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .dataTable {
+    grid-template-columns: 1fr; /* Single column layout on smaller screens */
+  }
+}
