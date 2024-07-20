@@ -15,6 +15,7 @@ import { LandingPage } from './pages/landing-page';
 import Status404 from './components/status-pages/Error404';
 import ErrorBoundary from './components/status-pages/errorBoundary';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import Wizard from './pages/agent-page/agent';
 
 const queryClient = new QueryClient();
 
@@ -86,6 +87,10 @@ function App() {
     {
       path: '/overview',
       element: <LandingPage />,
+    },
+    {
+      path: '/agent',
+      element: <Wizard />,
     },
     {
       path: '*', // Catch-all route for undefined paths
