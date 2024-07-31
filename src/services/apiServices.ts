@@ -9,7 +9,7 @@ interface User {
 }
 
 const apiClient = axios.create({
-  baseURL: 'http://localhost:5009', // your backend server URL
+  baseURL: 'http://localhost:3000', // your backend server URL
 });
 
 async function addUser(newUser: User): Promise<User> {

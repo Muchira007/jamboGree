@@ -1,10 +1,11 @@
 import { GridColDef } from '@mui/x-data-grid';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Add from '../../components/add/Add';
 import DataTable from '../../components/dataTable/DataTable';
-import { useAddProduct } from '../../services/apiProducts';
 import { Product } from '../../types';
 import './products.scss';
+import { useAddProduct } from '../../hooks/producthooks';
+
 
 const columns: GridColDef[] = [
   { field: 'id', headerName: 'ID', width: 90 },
@@ -17,26 +18,32 @@ const columns: GridColDef[] = [
     },
   },
   {
-    field: 'title',
+    field: 'name',
     type: 'string',
-    headerName: 'Title',
+    headerName: 'Name',
     width: 250,
   },
   {
-    field: 'color',
+    field: 'description',
     type: 'string',
-    headerName: 'Color',
+    headerName: 'Description',
     width: 150,
   },
   {
     field: 'price',
-    type: 'string',
+    type: 'number',
     headerName: 'Price',
     width: 200,
   },
   {
-    field: 'producer',
-    headerName: 'Producer',
+    field: 'quantity',
+    headerName: 'Quantity',
+    type: 'number',
+    width: 200,
+  },
+  {
+    field: 'color',
+    headerName: 'Color',
     type: 'string',
     width: 200,
   },
@@ -46,12 +53,6 @@ const columns: GridColDef[] = [
     width: 200,
     type: 'string',
   },
-  {
-    field: 'inStock',
-    headerName: 'In Stock',
-    width: 150,
-    type: 'boolean',
-  },
 ];
 
 const Products = () => {
@@ -59,12 +60,15 @@ const Products = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const addProductMutation = useAddProduct();
 
-  const handleAddProduct = (newProduct: Product) => {
-    addProductMutation.mutate(newProduct, {
-      onSuccess: (addedProduct) => {
-        setProducts((prevProducts) => [...prevProducts, addedProduct]);
-      },
-    });
+  const handleAddProduct = (newProduct: Product, imageFile?: File) => {
+    addProductMutation.mutate(
+      { product: newProduct, imageFile },
+      {
+        onSuccess: (addedProduct) => {
+          setProducts((prevProducts) => [...prevProducts, addedProduct]);
+        },
+      }
+    );
     setOpen(false);
   };
 

@@ -1,21 +1,34 @@
 import axios from 'axios';
-import { useMutation } from '@tanstack/react-query';
 import { Product } from '../../src/types';
 
 const apiClient = axios.create({
-  baseURL: 'http://localhost:5010', // your backend server URL
+  baseURL: 'http://localhost:3000', // your backend server URL
 });
 
-async function addProduct(newProduct: Product): Promise<Product> {
-  const response = await apiClient.post('/products', newProduct);
+// Function to handle product creation including image upload
+export async function addProduct(newProduct: Product, imageFile?: File): Promise<Product> {
+  const formData = new FormData();
+  
+  // Append product details
+  formData.append('name', newProduct.name);
+  formData.append('description', newProduct.description);
+  formData.append('price', newProduct.price.toString());
+  formData.append('quantity', newProduct.quantity.toString());
+  formData.append('color', newProduct.color);
+  
+  // Append image file if present
+  if (imageFile) {
+    formData.append('image', imageFile);
+  }
+
+  const response = await apiClient.post('/products', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+
   return response.data;
 }
-
-export const useAddProduct = () => {
-  return useMutation<Product, Error, Product>({
-    mutationFn: addProduct,
-  });
-};
 
 // Get product by ID
 // async function getProductById(productId: string): Promise<Product> {

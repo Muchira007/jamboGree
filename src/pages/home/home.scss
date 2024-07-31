@@ -49,4 +49,9 @@
       display: none;
     }
   }
+
+  .box10 {
+    grid-column: span 4;
+    grid-row: span 3;
+  }
 }
