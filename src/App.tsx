@@ -1,4 +1,6 @@
-import { Outlet, RouterProvider, createBrowserRouter, Navigate } from 'react-router-dom';
+// src/App.tsx
+import React from 'react';
+import { RouterProvider, createBrowserRouter, Navigate, Outlet } from 'react-router-dom';
 import Footer from './components/footer/Footer';
 import Menu from './components/menu/Menu';
 import Navbar from './components/navbar/Navbar';
@@ -14,13 +16,15 @@ import SignUp from './pages/authentication/signUp/Signup';
 import { LandingPage } from './pages/landing-page';
 import Status404 from './components/status-pages/Error404';
 import ErrorBoundary from './components/status-pages/errorBoundary';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import Wizard from './pages/agent-page/agent';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+import { AuthProvider } from './contexts/authContexts';
+import PrivateRoute from './components/privateRoutes';
 
 const queryClient = new QueryClient();
 
 function App() {
-  // Layout
   const Layout = () => {
     return (
       <div className="main">
@@ -30,7 +34,6 @@ function App() {
             <Menu />
           </div>
           <div className="contentContainer">
-            {/* render dynamically children components */}
             <Outlet />
           </div>
         </div>
@@ -39,7 +42,6 @@ function App() {
     );
   };
 
-  // navigation
   const router = createBrowserRouter([
     {
       path: '/',
@@ -51,23 +53,23 @@ function App() {
       children: [
         {
           path: '/home',
-          element: <Home />,
+          element: <PrivateRoute element={<Home />} />,
         },
         {
           path: '/users',
-          element: <Users />,
+          element: <PrivateRoute element={<Users />} />,
         },
         {
           path: '/products',
-          element: <Products />,
+          element: <PrivateRoute element={<Products />} />,
         },
         {
           path: '/users/:id',
-          element: <User />,
+          element: <PrivateRoute element={<User />} />,
         },
         {
           path: '/products/:id',
-          element: <Product />,
+          element: <PrivateRoute element={<Product />} />,
         },
       ],
       errorElement: <Status404 />, // Use the Status404 component for errors
@@ -100,9 +102,11 @@ function App() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ErrorBoundary>
-        <RouterProvider router={router} />
-      </ErrorBoundary>
+      <AuthProvider>
+        <ErrorBoundary>
+          <RouterProvider router={router} />
+        </ErrorBoundary>
+      </AuthProvider>
     </QueryClientProvider>
   );
 }

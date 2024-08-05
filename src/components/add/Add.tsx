@@ -12,12 +12,16 @@ interface AddProps {
 
 const Add = ({ slug, columns, setOpen, onSave }: AddProps) => {
   const [newProduct, setNewProduct] = useState<Product>({
-    name: '',
-    description: '',
-    price: 0,
-    quantity: 0,
-    color: '',
-    createdAt: '',
+    ID: 0,
+    Name: '',
+    Description: '',
+    Price: 0,
+    Quantity: 0,
+    Color: '',
+    ImageData: null,
+    CreatedAt: '',
+    UpdatedAt: '',
+    DeletedAt: null,
   });
   const [imageFile, setImageFile] = useState<File | undefined>(undefined);
 
@@ -43,7 +47,6 @@ const Add = ({ slug, columns, setOpen, onSave }: AddProps) => {
     onSave(newProduct, imageFile); // Pass the image file along with product data
   };
   
-
   return (
     <div className="add">
       <div className="modal">
@@ -53,7 +56,7 @@ const Add = ({ slug, columns, setOpen, onSave }: AddProps) => {
         <h1>Add new {slug}</h1>
         <form onSubmit={handleSubmit}>
           {columns
-            .filter((item) => item.field !== 'id' && item.field !== 'img' && item.field !== 'createdAt')
+            .filter((item) => item.field !== 'ID' && item.field !== 'ImageData' && item.field !== 'CreatedAt' && item.field !== 'UpdatedAt' && item.field !== 'DeletedAt')
             .map((column) => (
               <div className="item" key={column.field}>
                 <label>{column.headerName}</label>
@@ -81,3 +84,4 @@ const Add = ({ slug, columns, setOpen, onSave }: AddProps) => {
 };
 
 export default Add;
+

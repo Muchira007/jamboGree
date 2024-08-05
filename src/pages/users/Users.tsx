@@ -1,97 +1,43 @@
-// import { GridColDef } from '@mui/x-data-grid';
-// import { useState } from 'react';
-// import Add from '../../components/add/Add';
-// import DataTable from '../../components/dataTable/DataTable';
-// import { userRows } from '../../data';
-// import './users.scss';
-
-// const columns: GridColDef[] = [
-//   { field: 'id', headerName: 'ID', width: 90 },
-//   {
-//     field: 'img',
-//     headerName: 'Avatar',
-//     width: 100,
-//     renderCell: (params) => {
-//       return <img src={params.row.img || '/noavatar.png'} alt="" />;
-//     },
-//   },
-//   {
-//     field: 'firstName',
-//     type: 'string',
-//     headerName: 'First name',
-//     width: 150,
-//   },
-//   {
-//     field: 'lastName',
-//     type: 'string',
-//     headerName: 'Last name',
-//     width: 150,
-//   },
-//   {
-//     field: 'email',
-//     type: 'string',
-//     headerName: 'Email',
-//     width: 200,
-//   },
-//   {
-//     field: 'phone',
-//     type: 'string',
-//     headerName: 'Phone',
-//     width: 200,
-//   },
-//   {
-//     field: 'createdAt',
-//     headerName: 'Created At',
-//     width: 200,
-//     type: 'string',
-//   },
-//   {
-//     field: 'verified',
-//     headerName: 'Verified',
-//     width: 150,
-//     type: 'boolean',
-//   },
-// ];
-// const Users = () => {
-//   const [open, setOpen] = useState(false);
-//   return (
-//     <div className="users">
-//       <div className="info">
-//         <h1>Users</h1>
-//         <button onClick={() => setOpen(true)}>Add New User</button>
-//       </div>
-//       <DataTable slug="users" colums={columns} rows={userRows} />
-//       {open && <Add slug="user" columns={columns} setOpen={setOpen} />}
-//     </div>
-//   );
-// };
-
-// export default Users;
 import React, { useEffect, useState } from 'react';
-import { useFetchAllUsers } from '../../services/apiServices'; // Adjust the path as per your project structure
+import { useFetchAllUsers } from '../../hooks/usersHooks';
 import DataTable from '../../components/dataTable/DataTable'; // Adjust the path to your DataTable component
-import Add from '../../components/add/Add'; // Adjust the path to your Add component
+import Add from './addUser'; // Adjust the path to your Add component
+
+interface User {
+  national_id: number;
+  email: string;
+  first_name: string;
+  second_name: string;
+  sur_name: string;
+  phone_num: string;
+  password: string; // Include password here but not in the table
+}
+
 
 const Users = () => {
   const [open, setOpen] = useState(false);
-  const { mutate: fetchAllUsers, data: users, status, error } = useFetchAllUsers();
-
-  useEffect(() => {
-    fetchAllUsers();
-  }, [fetchAllUsers]);
+  const { data: users, status, error } = useFetchAllUsers();
 
   const columns = [
-    { field: 'name', headerName: 'Name', width: 150 },
-    { field: 'email', headerName: 'Email', width: 200 },
-    // Add more columns as needed
-  ];
+  { field: 'national_id', headerName: 'National ID', width: 150 },
+  { field: 'email', headerName: 'Email', width: 200 },
+  { field: 'first_name', headerName: 'First Name', width: 150 },
+  { field: 'second_name', headerName: 'Second Name', width: 150 },
+  { field: 'sur_name', headerName: 'Surname', width: 150 },
+  { field: 'phone_num', headerName: 'Phone Number', width: 150 },
+  // { field: 'password', headerName: 'Password', width: 150 },
+  // Add other columns if needed
+];
 
-  const userRows = users?.map((user, index) => ({
-    id: index,
-    name: user.name,
-    email: user.email,
-    // Map more fields as needed
-  })) || [];
+
+const userRows = users?.map((user) => ({
+  id: user.NationalID,
+  email: user.Email,
+  first_name: user.FirstName,
+  second_name: user.SecondName,
+  sur_name: user.SurName,
+  phone_num: user.PhoneNum,
+})) || [];
 
   return (
     <div className="users">
@@ -102,11 +48,19 @@ const Users = () => {
       {/* {status === 'loading' && <p>Loading...</p>} */}
       {status === 'error' && <p>Error fetching users: {error.message}</p>}
       {status === 'success' && (
-        <DataTable slug="users" colums={columns} rows={userRows} />
+        <DataTable slug="users" colums={columns} rows={userRows} onDelete={handleDelete} />
       )}
-      {open && <Add slug="user" columns={columns} setOpen={setOpen} />}
+      {open && <Add slug="user" columns={columns} setOpen={setOpen} onSave={handleSave} />}
     </div>
   );
+};
+
+const handleSave = (newUser: User) => {
+  // Implement save logic here, e.g., call a mutation to create the user
+};
+
+const handleDelete = (userId: string) => {
+  // Implement delete logic here, e.g., call a mutation to delete the user
 };
 
 export default Users;

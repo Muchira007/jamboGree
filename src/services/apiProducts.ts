@@ -1,34 +1,62 @@
-import axios from 'axios';
-import { Product } from '../../src/types';
-
-const apiClient = axios.create({
-  baseURL: 'http://localhost:3000', // your backend server URL
-});
+// apiProducts.ts
+import { apiClient, getToken } from './apiClient';
+import { Product } from '../types'; // Import the 'Product' type from the appropriate module
 
 // Function to handle product creation including image upload
 export async function addProduct(newProduct: Product, imageFile?: File): Promise<Product> {
   const formData = new FormData();
-  
+  const token = getToken();
+
+  console.log('Retrieved Token:', token); // Log the token
+
   // Append product details
-  formData.append('name', newProduct.name);
-  formData.append('description', newProduct.description);
-  formData.append('price', newProduct.price.toString());
-  formData.append('quantity', newProduct.quantity.toString());
-  formData.append('color', newProduct.color);
+  formData.append('name', newProduct.Name);
+  formData.append('description', newProduct.Description); 
+  formData.append('price', newProduct.Price.toString());
+  formData.append('quantity', newProduct.Quantity.toString());
+  formData.append('color', newProduct.Color);
   
-  // Append image file if present
   if (imageFile) {
     formData.append('image', imageFile);
   }
 
-  const response = await apiClient.post('/products', formData, {
-    headers: {
-      'Content-Type': 'multipart/form-data',
-    },
-  });
+  try {
+    const response = await apiClient.post('/products', formData, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'multipart/form-data',
+      },
+    });
 
-  return response.data;
+    console.log('Response:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Error in addProduct:', error);
+    throw error;
+  }
 }
+
+export const getAllProducts = async () => {
+  const token = getToken();
+
+  console.log('Retrieved Token for getAllProducts:', token); // Log the token
+
+  try {
+    const response = await apiClient.post('/products/get-product', {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    });
+    
+
+    console.log('Response:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Error in getAllProducts:', error);
+    throw error;
+  }
+};
+
 
 // Get product by ID
 // async function getProductById(productId: string): Promise<Product> {
@@ -36,11 +64,7 @@ export async function addProduct(newProduct: Product, imageFile?: File): Promise
 //   return response.data;
 // }
 
-// // Get all products
-// async function getAllProducts(): Promise<Product[]> {
-//   const response = await apiClient.get('/users/products');
-//   return response.data;
-// }
+
 
 // // Delete product by ID
 // async function deleteProduct(productId: string): Promise<void> {

@@ -5,9 +5,10 @@ import './dataTable.scss';
 
 interface Props {
   colums: GridColDef[];
-  rows: object[];
+  rows: any[];
   slug: string;
   onDelete: (id: string) => void;
+  getRowId?: (row: any) => number; 
 }
 
 const DataTable = (props: Props) => {
