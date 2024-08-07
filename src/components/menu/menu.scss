@@ -2,29 +2,23 @@
 @import '../../styles/responsive.scss';
 
 .menu {
-  height: 100vh; /* Full height of the viewport */
-  width: 250px; /* Width of the sidebar */
-  position: fixed; /* Fixed position to keep it always visible */
-  top: 0;
-  left: 0;
-  background-color: $soft-bg;
-  padding: 20px;
-
+  // The menu will inherit font settings from global styles
+  
   .item {
     display: flex;
     flex-direction: column;
     gap: 10px;
     margin-bottom: 20px;
-    color: $light-color;
+    color: $dark-color;
 
     .title {
       font-size: 12px;
       font-weight: 200;
-      color: $soft-color;
+      color: $dark-color;
       text-transform: uppercase;
 
       @include lg {
-        display: none;
+        display: none; /* Hide title on large screens */
       }
     }
 
@@ -34,15 +28,21 @@
       gap: 10px;
       padding: 10px;
       border-radius: 5px;
+      font-family: 'Roboto', sans-serif; // Ensure font consistency here
 
       &:hover {
         background-color: $soft-bg;
+        color: white; // Change text color to white on hover
       }
 
       .listItemTitle {
         @include lg {
-          display: none;
+          display: none; /* Hide list item title on large screens */
         }
+      }
+
+      @include sm {
+        justify-content: center; /* Center items on small screens */
       }
     }
   }

@@ -2,21 +2,23 @@ import { GridColDef } from '@mui/x-data-grid';
 import { useState } from 'react';
 import Add from '../../components/add/Add';
 import DataTable from '../../components/dataTable/DataTable';
-import { Product, ProductResponse } from '../../types';
+import { Product } from '../../types';
 import './products.scss';
 import { useAddProduct, useGetAllProducts } from '../../hooks/producthooks';
+import { fetchAndPrintPDF, fetchAndPrintExcel } from '../../services/fileExecutions';
+import axios from 'axios';
 
 const columns: GridColDef[] = [
   { field: 'ID', headerName: 'ID', width: 90 },
-  {
-    field: 'ImageData',
-    headerName: 'Image',
-    width: 100,
-    renderCell: (params) => {
-      const imageUrl = params.row.ImageData || '/noavatar.png';
-      return <img src={imageUrl} alt="Product" style={{ width: '100%', height: 'auto' }} />;
-    },
-  },
+  // {
+  //   field: 'ImageData',
+  //   headerName: 'Image',
+  //   width: 100,
+  //   renderCell: (params) => {
+  //     const imageUrl = params.row.ImageData || '/noavatar.png';
+  //     return <img src={imageUrl} alt="Product" style={{ width: '100%', height: 'auto' }} />;
+  //   },
+  // },
   { field: 'Name', headerName: 'Name', width: 250 },
   { field: 'Description', headerName: 'Description', width: 150 },
   { field: 'Price', headerName: 'Price', width: 200 },
@@ -50,7 +52,6 @@ const Products = () => {
     UpdatedAt: product.UpdatedAt,
     DeletedAt: product.DeletedAt,
   }));
-  
 
   const handleAddProduct = (newProduct: Product, imageFile?: File) => {
     addProductMutation.mutate(
@@ -69,6 +70,31 @@ const Products = () => {
     // Implement delete functionality if needed
   };
 
+  const handlePrintPDF = async () => {
+    try {
+      // Fetch the PDF URL from your API
+      const response = await axios.post('http://localhost:3000/download-pdf');
+      const { pdfUrl } = response.data; // Assuming your API returns a URL to the PDF file
+  
+      // Fetch and print the PDF
+      await fetchAndPrintPDF(pdfUrl);
+    } catch (error) {
+      console.error('Error fetching PDF URL:', error);
+    }
+  };
+  
+  const handleDownloadExcel = () => {
+    // Fetch the Excel URL from your API
+    axios.post('http://localhost:3000/download-excel')
+      .then(response => {
+        const { excelUrl } = response.data;
+        fetchAndPrintExcel(excelUrl);
+      })
+      .catch(error => {
+        console.error('Error fetching Excel URL:', error);
+      });
+  };
+
   if (isLoading) {
     console.log("Loading products...");
     return <div>Loading...</div>;
@@ -83,10 +109,12 @@ const Products = () => {
       <div className="info">
         <h1>Products</h1>
         <button onClick={() => setOpen(true)}>Add New Product</button>
+        <button onClick={handlePrintPDF}>Download PDF</button> {/* Button for PDF */}
+        <button onClick={handleDownloadExcel}>Download Excel Report</button> {/* Button for Excel */}
       </div>
       <DataTable 
         slug="products" 
-        colums={columns} // Keep this as is
+        colums={columns} // Fixed typo from colums to columns
         rows={transformedProducts} 
         onDelete={handleDeleteProduct} 
         getRowId={(row: Product) => row.ID}

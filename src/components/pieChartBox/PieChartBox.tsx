@@ -1,16 +1,31 @@
+import React, { useEffect, useState } from 'react';
 import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts';
+import { fetchSalesByGender } from '../apiFunctions/salesApi'; // Update the import path if needed
+import { transformSalesData } from '../apiFunctions/utility'; // Update the import path if needed
 import './pieChartBox.scss';
 
-const data = [
-  { name: 'Group A', value: 400, color: '#0088FE' },
-  { name: 'Group B', value: 300, color: '#00C49F' },
-  { name: 'Group C', value: 300, color: '#FFBB28' },
-  { name: 'Group D', value: 200, color: '#FF8042' },
-];
-const PieChartBox = () => {
+const PieChartBox: React.FC = () => {
+  const [data, setData] = useState<any[]>([]);
+
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        const response = await fetchSalesByGender();
+        console.log('API Response:', response); // Log the raw response
+        const transformedData = transformSalesData(response.data); // Adjust based on actual API response structure
+        console.log('Transformed Data:', transformedData); // Log the transformed data
+        setData(transformedData);
+      } catch (error) {
+        console.error('Error loading sales data:', error);
+      }
+    };
+
+    loadData();
+  }, []);
+
   return (
     <div className="pieChartBox">
-      <h1>Leads by Source</h1>
+      <h1>Gender Distribution</h1>
       <div className="chart">
         <ResponsiveContainer width="99%" height={300}>
           <PieChart>

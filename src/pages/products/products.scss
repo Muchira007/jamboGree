@@ -1,18 +1,18 @@
-.products {
-  .info {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    margin-bottom: 20px;
-    margin-left: 20px;
+  .products {
+    .info {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 20px;
+      margin-left: 20px;
 
-    button {
-      padding: 5px;
-      cursor: pointer;
-      background: #2a3447ec;
-      color: rgba(255, 255, 255, 0.914);
-      border-radius: 5px;
-      box-shadow: #2a3447ec;
+      button {
+        padding: 5px;
+        cursor: pointer;
+        background: #2a3447ec;
+        color: rgba(255, 255, 255, 0.914);
+        border-radius: 5px;
+        box-shadow: #2a3447ec;
+      }
     }
   }
-}

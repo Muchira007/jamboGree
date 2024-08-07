@@ -45,19 +45,20 @@ export interface Sale {
   gender: string;
   phone_number: string;
   customer_id: number;
-  latitude: number;  // Added latitude
-  longitude: number; // Added longitude
+  latitude: number;
+  longitude: number;
   country: string;
   county: string;
   subcounty: string;
   village: string;
-  product_id: number;
+  product_name: string; // Updated from product_id to product_name
   serial_number: string;
   payment_option: string;
   status_of_account: string;
   quantity: number;
-  // NationalID:  number;
+  national_id: number;
 }
+
 
 // Define the response structure for fetching sales
 export interface SaleResponse {

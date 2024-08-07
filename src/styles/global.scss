@@ -13,7 +13,7 @@ a {
 }
 
 .main {
-  font-family: 'Helvetica', sans-serif;
+  font-family: 'Roboto', sans-serif;
   background-color: $main-bg;
   color: $main-color;
 }
@@ -23,13 +23,29 @@ a {
 }
 
 .menuContainer {
-  width: 250px;
+  width: 150px; /* Default width for larger screens */
   padding: 5px 20px;
-  border-right: 2px solid $soft-bg;
+  // border-right: 2px solid $soft-bg;
+  background-color: rgb(255, 255, 255);
   box-shadow: $soft-bg;
+  border-radius: 20px;
+  transition: width 0.3s ease, padding 0.3s ease; /* Smooth transition for width and padding */
+
+  @include md {
+    width: 150px; /* Adjust width for medium screens */
+    padding: 5px 15px; /* Adjust padding for medium screens */
+  }
+
+  @include sm {
+    width: 100%; /* Full width for small screens */
+    padding: 5px 10px; /* Adjust padding for small screens */
+    border-right: none; /* Remove the right border on small screens */
+    border-radius: 0; /* Remove border radius for a cleaner look */
+    box-shadow: none; /* Remove shadow for a simpler design */
+  }
 
   @include lg {
-    width: max-content;
+    width: max-content; /* Allow content to dictate width on large screens */
   }
 }
 

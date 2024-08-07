@@ -61,12 +61,12 @@ const Navbar: React.FC = () => {
           ) : (
             <>
               <span>{user?.FirstName || 'User'}</span> {/* Use user.FirstName */}
-              {/* Logout Button */}
-              <button onClick={handleLogout} className="logout-button">
-                Logout
-              </button>
             </>
           )}
+          {/* Logout Button - Always displayed */}
+          <button onClick={handleLogout} className="logout-button">
+            Logout
+          </button>
         </div>
         <img src="/settings.svg" alt="" className="icon" />
       </div>

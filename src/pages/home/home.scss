@@ -1,6 +1,14 @@
 @import '../../styles/variables.scss';
 @import '../../styles/responsive.scss';
 
+$home-bg-color: #e0dcdc; // Mid white color for the home background
+$box-bg-color: #ffffff; // White color for the boxes
+
+body {
+  // margin: 10; /* Remove default margin */
+  background-color: $home-bg-color; /* Optional: Set a background color for the body */
+}
+
 .home {
   display: grid;
   gap: 20px;
@@ -9,6 +17,7 @@
   grid-auto-flow: dense;
   padding: 20px;
   border-radius: 20px;
+  background-color: $home-bg-color; // Set background color for the home section
 
   @include xl {
     grid-template-columns: repeat(3, 1fr);
@@ -23,17 +32,17 @@
     grid-auto-rows: minmax(120px, auto);
   }
 
-  //all boxes
+  // All boxes
   .box {
     padding: 20px;
     border-radius: 10px;
-    border: 1px solid $soft-bg;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); // Add a shadow to all boxes
+    background-color: $box-bg-color; // Set background color for each box
   }
 
   .box1 {
     grid-column: span 1;
     grid-row: span 3;
-    box-shadow: 0ch;
   }
 
   .box4 {

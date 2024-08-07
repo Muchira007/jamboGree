@@ -18,6 +18,7 @@ import Status404 from './components/status-pages/Error404';
 import ErrorBoundary from './components/status-pages/errorBoundary';
 import Wizard from './pages/agent-page/agent';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import '@fortawesome/fontawesome-free/css/all.min.css';
 
 import { AuthProvider } from './contexts/authContexts';
 import PrivateRoute from './components/privateRoutes';
@@ -71,6 +72,11 @@ function App() {
           path: '/products/:id',
           element: <PrivateRoute element={<Product />} />,
         },
+        // Add the following line to include the Wizard route:
+        {
+          path: '/agent',
+          element: <PrivateRoute element={<Wizard />} />, // Wrap Wizard with PrivateRoute if needed
+        },
       ],
       errorElement: <Status404 />, // Use the Status404 component for errors
     },
@@ -86,19 +92,16 @@ function App() {
       path: '/forgot-password',
       element: <ForgotPassword />,
     },
-    {
-      path: '/overview',
-      element: <LandingPage />,
-    },
-    {
-      path: '/agent',
-      element: <Wizard />,
-    },
+    // {
+    //   path: '/overview',
+    //   element: <LandingPage />,
+    // },
     {
       path: '*', // Catch-all route for undefined paths
       element: <Status404 />,
     },
   ]);
+  
 
   return (
     <QueryClientProvider client={queryClient}>
