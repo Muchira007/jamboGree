@@ -1,0 +1,85 @@
+/* Login.scss */
+
+.login-page {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh; // Ensure it covers the full viewport height
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-image: url('/img/Designer (3).jpeg'); // Adjust the path as needed
+  background-size: cover;
+  background-position: center;
+  z-index: 0; // Ensure it's below other content
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); // Black overlay with 50% opacity
+    z-index: 1; // Ensure overlay is above background but below content
+    align-items: center;
+    text-align: center;
+  }
+
+  .content {
+    position: relative;
+    z-index: 2; // Ensure content is above the overlay
+    background: rgba(255, 255, 255, 0.9); // White background with slight opacity
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 700px; // Limit the width of the content
+    width: 100%; // Ensure content is responsive
+    box-sizing: border-box; // Ensure padding is included in width calculation
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .contet-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center; // Ensure text is centered
+    margin-bottom: 2rem; // Add margin below the content if needed
+  }
+
+  /* Style for error messages */
+  .error-message {
+    color: red; // Set the text color to red
+    margin-top: 0.5rem; // Add some spacing between the field and error message
+    font-size: 0.875rem; // Adjust the font size if needed
+  }
+
+  /* Style for TextField error border */
+  .MuiTextField-root.Mui-error {
+    border: 1px solid red; // Change border color to red on error
+  }
+
+  /* Style for FormHelperText when error is present */
+  .MuiFormHelperText-root.Mui-error {
+    color: red; // Set the color of FormHelperText to red
+  }
+
+  .Text-body {
+    font-size: 1.5rem;
+    font-weight: 500;
+    margin-bottom: 1rem;
+    align-items: center;
+    justify-content: center;
+  }
+}
+.custom-phone-input {
+  width: 100%; /* Make the input full width */
+  font-size: 1rem; /* Adjust font size for the input text */
+  padding: 12px; /* Adjust padding for a larger touch area */
+  border-radius: 8px; /* Increase border-radius */
+  border: 1px solid #ccc; /* Optional: add border for better visibility */
+}

@@ -1,0 +1,12 @@
+// Define media query mixins
+@mixin media($breakpoint) {
+    @media (max-width: $breakpoint) {
+      @content;
+    }
+  }
+  
+  // Define specific breakpoints
+  $mobile-breakpoint: 576px; // Adjust this as needed
+  $tablet-breakpoint: 768px;
+  $desktop-breakpoint: 992px;
+  
