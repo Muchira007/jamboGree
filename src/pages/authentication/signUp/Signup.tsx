@@ -20,6 +20,8 @@ import 'react-phone-number-input/style.css'; // Import the CSS for styling
 
 import "../login/login.scss";
 import { useSignUp } from '../../../hooks/usersHooks';
+import { FaUserPlus } from 'react-icons/fa';
+
 
 // Define initial Formik values
 const initialValues = {
@@ -93,9 +95,21 @@ const SignUp = () => {
           {/* <Avatar sx={{ m: 3, bgcolor: 'secondary.main' }}>
             <LockOutlinedIcon />
           </Avatar> */}
-          <Typography component="h1" variant="h2" sx={{ mb: 2, fontWeight: 'bold' }}>
-            Sign Up
-          </Typography>
+          <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',  // Arrange items in a column
+        alignItems: 'center',     // Center horizontally
+        justifyContent: 'center', // Center vertically if needed
+        gap: 1,
+        mb: 2
+      }}
+    >
+      <FaUserPlus style={{ color: 'green', fontSize: '2rem' }} />
+      <Typography component="h1" variant="h2" sx={{ fontWeight: 'bold', color: '#333', fontSize: '40px' }}>
+        Sign Up
+      </Typography>
+    </Box>
           <Formik
             initialValues={initialValues}
             validationSchema={validationSchema}
@@ -217,7 +231,7 @@ const SignUp = () => {
                 <Button
                   type="submit"
                   variant="contained"
-                  sx={{ mt: 3, mb: 2, fontSize: '1rem', padding: '10px 20px' }}
+                  sx={{ mt: 3, mb: 2, fontSize: '1rem', padding: '10px 20px' ,backgroundColor:'green'}}
                   disabled={isSubmitting}
                 >
                   Sign Up
@@ -232,11 +246,11 @@ const SignUp = () => {
               </Form>
             )}
           </Formik>
-          <Typography variant="body2" color="text.secondary" align="center">
+          {/* <Typography variant="body2" color="text.secondary" align="center">
             {'Copyright © '}
             {new Date().getFullYear()}
             {'.'}
-          </Typography>
+          </Typography> */}
         </div>
       </div>
     </ThemeProvider>

@@ -1,89 +1,124 @@
-// src/pages/agent-page/agent.tsx
 import React from 'react';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
-import { Button, Container } from '@mui/material'; // Import Button from MUI
+import { Button, Container } from '@mui/material';
 import { PersonalDetails, LocationInformation, ProductInformation, PaymentInformation } from './components';
 import { useGeolocation } from './hooks/useGeolocation';
 import { useFormErrors } from './hooks/useFormErrors';
 import { useFormValues } from './hooks/useFormValues';
-import '@fortawesome/fontawesome-free/css/all.min.css';
-import './agent.scss'; // Import custom styles
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import './agent.scss';
 
 const Agent: React.FC = () => {
-  const navigate = useNavigate(); // Initialize useNavigate
   const {
     formValues,
+    setFormValues,
     handleChange,
     handleInputChange,
-    handleSubmit,
+    handleSubmit: originalHandleSubmit,
     geoError,
     setGeolocation,
   } = useFormValues();
 
   const { errors } = useFormErrors(formValues);
-
   const { getCurrentLocation } = useGeolocation(setGeolocation, (error: string | null) => {
     if (error) {
-      // Handle geolocation error (you might want to display this in the UI)
       console.error(error);
     }
   });
 
-  // Handle navigation to the dashboard
-  // const goToDashboard = () => {
-  //   navigate('/home'); // Navigate to /home
-  // };
+const handleSubmit = async () => {
+  const result = await originalHandleSubmit();
 
+  // Check if the response contains the sale object
+  if (result && result.data && result.data.sale) {
+    toast.success('Sale successfully recorded!', { autoClose: 2000 });
+
+    console.log('Sale Data:', result.data.sale); // Log the sale data for verification
+
+    // Clear form values immediately
+    setFormValues({
+      name: '',
+      date_of_sale: '',
+      gender: '',
+      phone_number: '',
+      customer_id: 0,
+      latitude: 0,
+      longitude: 0,
+      country: '',
+      county: '',
+      subcounty: '',
+      village: '',
+      product_name: '',
+      serial_number: '',
+      payment_option: '',
+      status_of_account: '',
+      quantity: 0,
+      national_id: 0
+    });
+
+    // Refresh the page
+    setTimeout(() => {
+      window.location.href = window.location.href; // Forces a full page reload
+    }, 2000);
+  } else {
+    toast.error('Sale submission failed. Please try again.', { autoClose: 3000 });
+    console.error('Failed response:', result.error || 'Unknown error');
+  }
+};
+
+  
   return (
     <div className="agent-page">
       <Container className="form-container">
-        <div className="form-content">
-          <PersonalDetails
-            formValues={formValues}
-            errors={errors}
-            handleChange={handleChange}
-            geoError={geoError}
-          />
-          <LocationInformation
-            formValues={formValues}
-            errors={errors}
-            handleChange={handleChange}
-            onFetchLocation={getCurrentLocation} // Pass the function to fetch location
-            latitude={formValues.latitude}
-            longitude={formValues.longitude}
-          />
-          <ProductInformation
-            formValues={formValues}
-            errors={errors}
-            handleInputChange={handleInputChange}
-            handleChange={handleChange}
-          />
-          <PaymentInformation
-            formValues={formValues}
-            errors={errors}
-            handleChange={handleChange}
-          />
-          <div className="button-group">
-            <Button
-              type="button"
-              variant="contained"
-              color="primary"
-              onClick={handleSubmit} // Handle form submission
-            >
-              Submit
-            </Button>
-            {/* Uncomment the button below if needed */}
-            {/* <Button
-              type="button"
-              variant="outlined"
-              color="primary"
-              onClick={goToDashboard} // Handle navigation
-            >
-              Go to Dashboard
-            </Button> */}
+        <div className="row">
+          <div className="col-md-9 form-section">
+            <div className="form-group">
+              <PersonalDetails
+                formValues={formValues}
+                errors={errors}
+                handleChange={handleChange}
+                geoError={geoError}
+              />
+            </div>
+
+            <div className="form-group">
+              <LocationInformation
+                formValues={formValues}
+                errors={errors}
+                handleChange={handleChange}
+                onFetchLocation={getCurrentLocation}
+                latitude={formValues.latitude}
+                longitude={formValues.longitude}
+              />
+            </div>
+
+            <div className="form-group">
+              <ProductInformation
+                formValues={formValues}
+                errors={errors}
+                handleInputChange={handleInputChange}
+                handleChange={handleChange}
+              />
+            </div>
+
+            <div className="form-group">
+              <PaymentInformation
+                formValues={formValues}
+                errors={errors}
+                handleChange={handleChange}
+              />
+            </div>
+
+            <div className="button-group">
+              <Button type="button" variant="contained" onClick={handleSubmit}>
+                Submit
+              </Button>
+            </div>
           </div>
         </div>
       </Container>
+
+      <ToastContainer />
     </div>
   );
 };

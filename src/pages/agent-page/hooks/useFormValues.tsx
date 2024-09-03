@@ -1,11 +1,8 @@
 import { useState } from 'react';
-import { useQueryClient } from '@tanstack/react-query';
 import { postSale } from '../../../services/apiSales';
 import { Sale } from '../../../types';
-import { User } from '../../../types';
 
 export const useFormValues = () => {
-  const queryClient = useQueryClient();
   const [formValues, setFormValues] = useState<Sale>({
     name: '',
     date_of_sale: '',
@@ -18,7 +15,7 @@ export const useFormValues = () => {
     county: '',
     subcounty: '',
     village: '',
-    product_name: '', // Updated from product_id
+    product_name: '',
     serial_number: '',
     payment_option: '',
     status_of_account: '',
@@ -28,9 +25,21 @@ export const useFormValues = () => {
 
   const [geoError, setGeoError] = useState<string | null>(null);
 
-  // Fetch the national_id from React Query
-  const user = queryClient.getQueryData<User>(['user']);
-  const national_id = user ? (user.NationalID || 0) : 0;
+  const getNationalIdFromSession = () => {
+    const user = sessionStorage.getItem('user');
+    if (user) {
+      try {
+        const parsedUser = JSON.parse(user);
+        return parsedUser.NationalID || 0;
+      } catch (error) {
+        console.error('Error parsing user from session storage:', error);
+        return 0;
+      }
+    }
+    return 0;
+  };
+
+  const national_id = getNationalIdFromSession();
 
   const setGeolocation = (lat: number, lon: number) => {
     setFormValues((prevValues) => ({
@@ -40,7 +49,6 @@ export const useFormValues = () => {
     }));
   };
 
-  // Add handleInputChange
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target;
     if (type === 'checkbox') {
@@ -97,18 +105,23 @@ export const useFormValues = () => {
 
   const handleSubmit = async () => {
     try {
-      // Ensure `national_id` is included in formValues if necessary
       const response = await postSale({ ...formValues, national_id });
-      console.log('Sale posted successfully:', response);
+
+      if (response.success && response.data) {
+        return { success: true, data: response.data };
+      } else {
+        return { success: false, error: response.error || 'Submission failed' };
+      }
     } catch (error) {
       console.error('Error posting sale:', error);
+      return { success: false, error: error.message || 'Unknown error' };
     }
   };
 
   return {
     formValues,
     geoError,
-    handleInputChange, // Return handleInputChange
+    handleInputChange,
     handleChange,
     handleSubmit,
     setGeolocation,

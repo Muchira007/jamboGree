@@ -1,4 +1,3 @@
-// src/pages/agent-page/components/PersonalDetails.tsx
 import React from 'react';
 
 interface Props {
@@ -23,8 +22,9 @@ interface Props {
 const PersonalDetails: React.FC<Props> = ({ formValues, errors, handleChange, geoError }) => {
   return (
     <>
+      {/* Name and Gender on the same row */}
       <div className="form-row">
-        <div className="form-group">
+        <div className="form-group name-group">
           <label htmlFor="name" className="form-label">
             Name<span className="required">*</span>:
           </label>
@@ -39,7 +39,7 @@ const PersonalDetails: React.FC<Props> = ({ formValues, errors, handleChange, ge
           {errors.name && <div className="error">{errors.name}</div>}
         </div>
 
-        <div className="form-group">
+        <div className="form-group gender-group">
           <label htmlFor="gender" className="form-label">
             Gender<span className="required">*</span>:
           </label>
@@ -56,7 +56,10 @@ const PersonalDetails: React.FC<Props> = ({ formValues, errors, handleChange, ge
           </select>
           {errors.gender && <div className="error">{errors.gender}</div>}
         </div>
+      </div>
 
+      {/* National ID and Phone Number on the same row */}
+      <div className="form-row">
         <div className="form-group">
           <label htmlFor="customer_id" className="form-label">
             National ID<span className="required">*</span>:
@@ -71,21 +74,21 @@ const PersonalDetails: React.FC<Props> = ({ formValues, errors, handleChange, ge
           />
           {errors.customer_id && <div className="error">{errors.customer_id}</div>}
         </div>
-      </div>
 
-      <div className="form-group">
-        <label htmlFor="phone_number" className="form-label">
-          Phone Number<span className="required">*</span>:
-        </label>
-        <input
-          type="text"
-          id="phone_number"
-          name="phone_number"
-          className="form-input"
-          value={formValues.phone_number}
-          onChange={handleChange}
-        />
-        {errors.phone_number && <div className="error">{errors.phone_number}</div>}
+        <div className="form-group phone-group">
+          <label htmlFor="phone_number" className="form-label">
+            Phone Number<span className="required">*</span>:
+          </label>
+          <input
+            type="text"
+            id="phone_number"
+            name="phone_number"
+            className="form-input"
+            value={formValues.phone_number}
+            onChange={handleChange}
+          />
+          {errors.phone_number && <div className="error">{errors.phone_number}</div>}
+        </div>
       </div>
     </>
   );

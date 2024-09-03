@@ -13,6 +13,8 @@ import { useLoginUser } from '../../../hooks/usersHooks'; // Adjust the import p
 import { useQueryClient } from '@tanstack/react-query';
 import Cookies from 'js-cookie'; // Import Cookies
 import './Login.scss';
+import { FaUnlock } from 'react-icons/fa';
+import { Box } from '@mui/system';
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().email('Invalid email address').required('Required'),
@@ -30,13 +32,13 @@ export default function SignIn() {
         email: values.email,
         password: values.password,
       });
-
+  
       // Store the token in cookies
-      Cookies.set('authToken', token, { expires: 1 }); // Store token with 1-day expiration
-
-      // Store user data in React Query cache
-      queryClient.setQueryData(['user'], user); // Assuming user contains the user details
-
+      Cookies.set('authToken', token, { expires: 1 });
+  
+      // Store user data in session storage
+      sessionStorage.setItem('user', JSON.stringify(user));
+  
       // Handle success
       console.log('User logged in successfully:', user);
       navigate('/home'); // Redirect to home or desired route
@@ -47,13 +49,26 @@ export default function SignIn() {
       setSubmitting(false);
     }
   };
+  
 
   return (
     <div className="login-page">
       <div className="content">
-        <Typography component="h1" variant="h2" sx={{ mb: 2, fontWeight: 'bold' }}>
-          Log In
-        </Typography>
+      <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',  // Arrange items in a column
+        alignItems: 'center',     // Center horizontally
+        justifyContent: 'center', // Center vertically if needed
+        gap: 1,
+        mb: 2
+      }}
+    >
+      <FaUnlock style={{ color: 'green', fontSize: '2rem' }} />
+      <Typography component="h1" variant="h2" sx={{ fontWeight: 'bold', color: '#333', fontSize: '40px' }}>
+       Log In
+      </Typography>
+    </Box>
         <Formik
           initialValues={{ email: '', password: '' }}
           validationSchema={validationSchema}
@@ -96,7 +111,7 @@ export default function SignIn() {
               <Button
                 type="submit"
                 variant="contained"
-                sx={{ mt: 3, mb: 2, fontSize: '1.1rem', padding: '12px 24px' }}
+                sx={{ mt: 3, mb: 2, fontSize: '1.1rem', padding: '12px 24px',backgroundColor:'green' }}
                 disabled={isSubmitting}
               >
                 Sign In

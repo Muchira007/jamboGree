@@ -71,6 +71,6 @@ export async function updateUser(userId: string, userData: {
   sur_name?: string;
   phone_num?: string;
 }): Promise<User> {
-  const response = await apiClient.put(`/users/${userId}`, userData);
+  const response = await apiClient.post(`/update-users/${userId}`, userData);
   return response.data.user; // Adjust based on your response structure
 }

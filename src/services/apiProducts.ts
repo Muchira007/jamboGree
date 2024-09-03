@@ -1,15 +1,13 @@
-// apiProducts.ts
 import { apiClient, getToken } from './apiClient';
-import { Product } from '../types'; // Import the 'Product' type from the appropriate module
+import { Product } from '../types';
 
 // Function to handle product creation including image upload
 export async function addProduct(newProduct: Product, imageFile?: File): Promise<Product> {
   const formData = new FormData();
   const token = getToken();
 
-  console.log('Retrieved Token:', token); // Log the token
+  console.log('Retrieved Token:', token);
 
-  // Append product details
   formData.append('name', newProduct.Name);
   formData.append('description', newProduct.Description); 
   formData.append('price', newProduct.Price.toString());
@@ -39,7 +37,7 @@ export async function addProduct(newProduct: Product, imageFile?: File): Promise
 export const getAllProducts = async () => {
   const token = getToken();
 
-  console.log('Retrieved Token for getAllProducts:', token); // Log the token
+  console.log('Retrieved Token for getAllProducts:', token);
 
   try {
     const response = await apiClient.post('/products/get-product', {
@@ -47,7 +45,6 @@ export const getAllProducts = async () => {
         'Authorization': `Bearer ${token}`,
       },
     });
-    
 
     console.log('Response:', response.data);
     return response.data;
@@ -57,36 +54,21 @@ export const getAllProducts = async () => {
   }
 };
 
+// Update product by ID
+export const updateProduct = async (id: string, updatedProduct: Product) => {
+  const token = getToken();
 
-// Get product by ID
-// async function getProductById(productId: string): Promise<Product> {
-//   const response = await apiClient.get(`/products/${productId}`);
-//   return response.data;
-// }
+  try {
+    const response = await apiClient.post(`/products/update/${id}`, updatedProduct, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    });
 
-
-
-// // Delete product by ID
-// async function deleteProduct(productId: string): Promise<void> {
-//   await apiClient.delete(`/products/${productId}`);
-// }
-
-// React Query hooks
-
-
-// export const useGetProductById = () => {
-//   return useMutation(getProductById);
-// };
-
-// export const useGetAllProducts = () => {
-//   return useMutation(getAllProducts);
-// };
-
-// export const useDeleteProduct = () => {
-//   const queryClient = useQueryClient();
-//   return useMutation(deleteProduct, {
-//     onSuccess: () => {
-//       queryClient.invalidateQueries('products');
-//     },
-//   });
-// };
+    console.log('Response for product update:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Error updating product:', error);
+    throw error;
+  }
+}

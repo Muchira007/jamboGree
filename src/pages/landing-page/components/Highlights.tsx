@@ -1,53 +1,43 @@
-import * as React from 'react';
-import Box from '@mui/material/Box';
-import Card from '@mui/material/Card';
-import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid';
-import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
-import AutoFixHighRoundedIcon from '@mui/icons-material/AutoFixHighRounded';
-import ConstructionRoundedIcon from '@mui/icons-material/ConstructionRounded';
-import QueryStatsRoundedIcon from '@mui/icons-material/QueryStatsRounded';
-import SettingsSuggestRoundedIcon from '@mui/icons-material/SettingsSuggestRounded';
-import SupportAgentRoundedIcon from '@mui/icons-material/SupportAgentRounded';
-import ThumbUpAltRoundedIcon from '@mui/icons-material/ThumbUpAltRounded';
+import React from 'react';
+import { Box, Container, Grid, Typography, Stack, Card } from '@mui/material';
+import { FaLeaf, FaHome, FaUsers, FaDollarSign, FaChartBar, FaHandsHelping } from 'react-icons/fa';
 
 const items = [
   {
-    icon: <SettingsSuggestRoundedIcon />,
-    title: 'Adaptable performance',
+    icon: <FaLeaf size={40} />,
+    title: '415,000+ Clean Stoves Sold',
     description:
-      'Our product effortlessly adjusts to your needs, boosting efficiency and simplifying your tasks.',
+      'Our modernized cookstoves have been distributed to over 415,000 households, significantly reducing carbon emissions and improving air quality.',
   },
   {
-    icon: <ConstructionRoundedIcon />,
-    title: 'Built to last',
+    icon: <FaHome size={40} />,
+    title: '2,500+ Households Served',
     description:
-      'Experience unmatched durability that goes above and beyond with lasting investment.',
+      'We have directly served over 2,500 households, enhancing their quality of life with cleaner cooking solutions.',
   },
   {
-    icon: <ThumbUpAltRoundedIcon />,
-    title: 'Great user experience',
+    icon: <FaUsers size={40} />,
+    title: '2 Million+ Lives Impacted',
     description:
-      'Integrate our product into your routine with an intuitive and easy-to-use interface.',
+      'Our initiatives have positively impacted over 2 million lives, providing cleaner cooking solutions and contributing to healthier households.',
   },
   {
-    icon: <AutoFixHighRoundedIcon />,
-    title: 'Innovative functionality',
+    icon: <FaDollarSign size={40} />,
+    title: '60% Female, 40% Male Sales Agents',
     description:
-      'Stay ahead with features that set new standards, addressing your evolving needs better than the rest.',
+      'We proudly employ a balanced team with 60% female and 40% male sales agents, empowering women while fostering gender diversity.',
   },
   {
-    icon: <SupportAgentRoundedIcon />,
-    title: 'Reliable support',
+    icon: <FaHandsHelping size={40} />,
+    title: '95% Local Staff',
     description:
-      'Count on our responsive customer support, offering assistance that goes beyond the purchase.',
+      '95% of our staff members come from the communities we serve, ensuring that our efforts are deeply rooted and impactful locally.',
   },
   {
-    icon: <QueryStatsRoundedIcon />,
-    title: 'Precision in every detail',
+    icon: <FaChartBar size={40} />,
+    title: 'Measurable Carbon Credits',
     description:
-      'Enjoy a meticulously crafted product where small touches make a significant impact on your overall experience.',
+      'Our cookstoves generate measurable carbon credits, contributing to global carbon offset goals and promoting environmental sustainability.',
   },
 ];
 
@@ -58,8 +48,8 @@ export default function Highlights() {
       sx={{
         pt: { xs: 4, sm: 12 },
         pb: { xs: 8, sm: 16 },
-        color: 'white',
-        bgcolor: '#06090a',
+        bgcolor: 'white',
+        color: 'black',
       }}
     >
       <Container
@@ -77,42 +67,37 @@ export default function Highlights() {
             textAlign: { sm: 'left', md: 'center' },
           }}
         >
-          <Typography component="h2" variant="h4">
+          <Typography component="h2" variant="h4" color="black">
             Highlights
           </Typography>
-          <Typography variant="body1" sx={{ color: 'grey.400' }}>
-            Explore why our product stands out: adaptability, durability,
-            user-friendly design, and innovation. Enjoy reliable customer support and
-            precision in every detail.
+          <Typography variant="body1" sx={{ color: 'black' }}>
+            Discover the tangible impacts of our modernized cookstoves: from reducing carbon emissions and supporting local communities to empowering women and educating future generations. Join us in making a significant difference.
           </Typography>
         </Box>
-        <Grid container spacing={2.5}>
+        <Grid container spacing={2.5} alignItems="center">
           {items.map((item, index) => (
             <Grid item xs={12} sm={6} md={4} key={index}>
               <Stack
                 direction="column"
-                color="inherit"
+                spacing={2}
                 component={Card}
-                spacing={1}
-                useFlexGap
                 sx={{
                   p: 3,
                   height: '100%',
                   border: '1px solid',
                   borderColor: 'grey.800',
-                  background: 'transparent',
-                  backgroundColor: 'grey.900',
+                  backgroundColor: 'white',
+                  color: 'black',
+                  textAlign: 'center',
                 }}
               >
-                <Box sx={{ opacity: '50%' }}>{item.icon}</Box>
-                <div>
-                  <Typography fontWeight="medium" gutterBottom>
-                    {item.title}
-                  </Typography>
-                  <Typography variant="body2" sx={{ color: 'grey.400' }}>
-                    {item.description}
-                  </Typography>
-                </div>
+                <Box sx={{ mb: 2, color: 'green' }}>{item.icon}</Box>
+                <Typography fontWeight="medium" gutterBottom>
+                  {item.title}
+                </Typography>
+                <Typography variant="body2" sx={{ color: 'black' }}>
+                  {item.description}
+                </Typography>
               </Stack>
             </Grid>
           ))}

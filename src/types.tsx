@@ -1,22 +1,22 @@
 // types.ts
+
 export interface Product {
-  ID: number;          // Product ID
-  Name: string;        // Product name
-  Description: string; // Product description
-  Price: number;       // Product price
-  Quantity: number;    // Product quantity
-  Color: string;       // Product color
-  ImageData: string | null;  // Image data URL or null if not provided
-  CreatedAt: string;   // Product creation date
-  UpdatedAt: string;   // Product update date
-  DeletedAt: string | null; // Product deletion date or null if not deleted
+  ID: number;
+  Name: string;
+  Description: string;
+  Price: number;
+  Quantity: number;
+  Color: string;
+  ImageData: string | null;
+  CreatedAt: string;
+  UpdatedAt: string;
+  DeletedAt: string | null;
 }
 
 export interface ProductResponse {
-  posts: Product[]; // Array of Product objects
+  products: Product[]; // Corrected the key from 'posts' to 'products'
 }
 
-  // Define the User interface
 export interface User {
   ID: number;
   CreatedAt: string;
@@ -33,12 +33,73 @@ export interface User {
   ResetTokenExpiry: string;
 }
 
-// Define the response structure for fetching all users
 export interface UserResponse {
   users: User[];
 }
 
-// Define the Sale interface
+export interface Sales {
+  ID: number;
+  CreatedAt: string;
+  Customer: {
+    ID: number;
+    Name: string;
+    PhoneNumber: string;
+    NationalID: string;
+    Country: string;
+    County: string;
+    Subcounty: string;
+    Village: string;
+    CreatedAt: string;
+    UpdatedAt: string;
+    DeletedAt: string | null;
+  };
+  CustomerID: number;
+  DateOfSale: string;
+  DeletedAt: string | null;
+  Latitude: number;
+  Longitude: number;
+  NationalID: string;
+  PaymentOption: string;
+  Product: {
+    ID: number;
+    Name: string;
+    Description: string;
+    Price: number;
+    Color: string;
+    CreatedAt: string;
+    UpdatedAt: string;
+    DeletedAt: string | null;
+  };
+  ProductID: number;
+  Quantity: number;
+  SerialNumber: string;
+  StatusOfAccount: string;
+  Total: number;
+  UpdatedAt: string;
+}
+
+export interface SalesResponse {
+  sales: Sales[];
+}
+
+export interface Customer {
+  ID: number;
+  Name: string;
+  PhoneNumber: string;
+  Country: string;
+  County: string;
+  Subcounty: string;
+  Village: string;
+  CreatedAt: string;
+  UpdatedAt: string;
+  DeletedAt: string | null;
+}
+
+export interface CustomerResponse {
+  customers: Customer[];
+}
+
+// Define Sale and other types
 export interface Sale {
   name: string;
   date_of_sale: string;
@@ -51,16 +112,10 @@ export interface Sale {
   county: string;
   subcounty: string;
   village: string;
-  product_name: string; // Updated from product_id to product_name
+  product_name: string;
   serial_number: string;
   payment_option: string;
   status_of_account: string;
   quantity: number;
   national_id: number;
-}
-
-
-// Define the response structure for fetching sales
-export interface SaleResponse {
-  sales: Sale[];
 }

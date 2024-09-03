@@ -1,8 +1,13 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import Grid from '@mui/material/Grid';
+//import Grid from '@mui/material/Grid';
 import { useTheme } from '@mui/system';
+//import Button from '@mui/material/Button';
+import { useState } from 'react';
+import { IconButton } from '@mui/material';
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import PauseIcon from '@mui/icons-material/Pause';
 
 const whiteLogos = [
   'https://assets-global.website-files.com/61ed56ae9da9fd7e0ef0a967/6560628e8573c43893fe0ace_Sydney-white.svg',
@@ -33,27 +38,57 @@ export default function LogoCollection() {
   const theme = useTheme();
   const logos = theme.palette.mode === 'light' ? darkLogos : whiteLogos;
 
+  // State to track whether the animation is paused
+  const [isPaused, setIsPaused] = useState(false);
+
+  // Toggle the paused state
+  const togglePause = () => {
+    setIsPaused(!isPaused);
+  };
+
   return (
-    <Box id="logoCollection" sx={{ py: 4 }}>
-      <Typography
+    <Box id="logoCollection" sx={{ py: 4, overflow: 'hidden', position: 'relative' }}>
+      <Typography style={{color:'black',fontSize:'24px'}}
         component="p"
         variant="subtitle2"
         align="center"
         color="text.secondary"
+        sx={{ mb: 2 }}
       >
-        Trusted by the best companies
+        Companies we've worked with
       </Typography>
-      <Grid container justifyContent="center" sx={{ mt: 0.5, opacity: 0.6 }}>
-        {logos.map((logo, index) => (
-          <Grid item key={index}>
-            <img
-              src={logo}
-              alt={`Fake company number ${index + 1}`}
-              style={logoStyle}
-            />
-          </Grid>
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          whiteSpace: 'nowrap',
+          animation: isPaused
+            ? 'none'
+            : 'scroll 20s linear infinite',
+          '@keyframes scroll': {
+            '0%': { transform: 'translateX(100%)' },
+            '100%': { transform: 'translateX(-100%)' },
+          },
+        }}
+      >
+        {logos.concat(logos).map((logo, index) => (
+          <img
+            key={index}
+            src={logo}
+            alt={`Company logo ${index + 1}`}
+            style={logoStyle}
+          />
         ))}
-      </Grid>
+      </Box>
+      <Box sx={{ textAlign: 'center', mt: 2 }}>
+        <IconButton
+          color="primary"
+          onClick={togglePause}
+        >
+          {isPaused ? <PlayArrowIcon /> : <PauseIcon />}
+        </IconButton>
+      </Box>
     </Box>
   );
 }

@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import GoogleMapReact from 'google-map-react';
 import { Box, Typography, styled, Button } from '@mui/material';
+import { Sales } from '../../types'; // Import the Sales type
 
 const StyledMapContainer = styled(Box)(
   ({ theme }) => `
@@ -16,17 +17,38 @@ const StyledMapContainer = styled(Box)(
   `
 );
 
+const productColors: Record<number, string> = {
+  1: '#FF5733', // Example color for Product ID 1
+  2: '#33FF57', // Example color for Product ID 2
+  // Add more product IDs and their corresponding colors here
+};
+
 interface AnyReactComponentProps {
   lat: number;
   lng: number;
   text: string;
+  color: string;
 }
 
-const AnyReactComponent: React.FC<AnyReactComponentProps> = ({ text }) => (
-  <div>{text}</div>
+const AnyReactComponent: React.FC<AnyReactComponentProps> = ({ text, color }) => (
+  <div style={{
+    color: '#fff',
+    background: color,
+    padding: '10px 15px',
+    borderRadius: '50%',
+    textAlign: 'center',
+    fontSize: '12px',
+    fontWeight: 'bold'
+  }}>
+    {text}
+  </div>
 );
 
-export default function MapDistribution() {
+interface MapDistributionProps {
+  sales?: Sales[]; // Make sales optional to handle cases where it's undefined
+}
+
+export default function MapDistribution({ sales = [] }: MapDistributionProps) {
   const [center, setCenter] = useState({
     lat: 10.99835602,
     lng: 77.01502627,
@@ -35,6 +57,15 @@ export default function MapDistribution() {
   const defaultProps = {
     zoom: 11
   };
+
+  useEffect(() => {
+    if (sales.length > 0) {
+      setCenter({
+        lat: sales[0].Latitude,
+        lng: sales[0].Longitude,
+      });
+    }
+  }, [sales]);
 
   const handleGeolocation = () => {
     if (navigator.geolocation) {
@@ -59,17 +90,21 @@ export default function MapDistribution() {
       <Typography variant="h3" sx={{ pb: 3 }}>
         Location Map
       </Typography>
-      <div style={{ height: '90%', width: '100%',  position: 'relative' }}>
+      <div style={{ height: '90%', width: '100%', position: 'relative' }}>
         <GoogleMapReact
           bootstrapURLKeys={{ key: "AIzaSyCBgUnMhlMWua_5Q_QoylKalTY6HktzYz0" }}
           center={center}
           defaultZoom={defaultProps.zoom}
         >
-          <AnyReactComponent
-            lat={center.lat}
-            lng={center.lng}
-            text="My Marker"
-          />
+          {sales.map((sale) => (
+            <AnyReactComponent
+              key={sale.ID}
+              lat={sale.Latitude}
+              lng={sale.Longitude}
+              text={sale.Product.Name}
+              color={productColors[sale.ProductID] || '#000'}
+            />
+          ))}
         </GoogleMapReact>
       </div>
       <Button
@@ -83,4 +118,3 @@ export default function MapDistribution() {
     </StyledMapContainer>
   );
 }
-

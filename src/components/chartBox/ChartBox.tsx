@@ -10,7 +10,9 @@ type Props = {
   number: number | string;
   percentage: number;
   chartData: object[];
+  link: string; // New prop to specify the navigation link
 };
+
 const ChartBox = (props: Props) => {
   return (
     <div className="chartBox">
@@ -20,7 +22,7 @@ const ChartBox = (props: Props) => {
           <span>{props.title}</span>
         </div>
         <h1>{props.number}</h1>
-        <Link to="/" style={{ color: props.color }}>
+        <Link to={props.link} style={{ color: props.color }}>
           View All
         </Link>
       </div>
@@ -50,7 +52,7 @@ const ChartBox = (props: Props) => {
           >
             {props.percentage}%
           </span>
-          <span className="duration">this month</span>
+          {/* <span className="duration">this month</span> */}
         </div>
       </div>
     </div>

@@ -22,6 +22,9 @@ import '@fortawesome/fontawesome-free/css/all.min.css';
 
 import { AuthProvider } from './contexts/authContexts';
 import PrivateRoute from './components/privateRoutes';
+import Customers from './pages/customers/customers';
+import { HelmetProvider } from 'react-helmet-async';
+import SalesRecorded from './pages/sales/sales';
 
 const queryClient = new QueryClient();
 
@@ -65,6 +68,14 @@ function App() {
           element: <PrivateRoute element={<Products />} />,
         },
         {
+          path: '/sales',
+          element: <PrivateRoute element={<SalesRecorded />} />,
+        },
+        {
+          path: '/customers',
+          element: <PrivateRoute element={<Customers />} />,
+        },
+        {
           path: '/users/:id',
           element: <PrivateRoute element={<User />} />,
         },
@@ -83,7 +94,7 @@ function App() {
     {
       path: '/login',
       element: <Login />,
-    },
+    }, 
     {
       path: '/sign-up',
       element: <SignUp />,
@@ -92,10 +103,10 @@ function App() {
       path: '/forgot-password',
       element: <ForgotPassword />,
     },
-    // {
-    //   path: '/overview',
-    //   element: <LandingPage />,
-    // },
+    {
+      path: '/overview',
+      element: <LandingPage />,
+    },
     {
       path: '*', // Catch-all route for undefined paths
       element: <Status404 />,
@@ -103,15 +114,17 @@ function App() {
   ]);
   
 
-  return (
-    <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        <ErrorBoundary>
-          <RouterProvider router={router} />
-        </ErrorBoundary>
-      </AuthProvider>
-    </QueryClientProvider>
-  );
-}
-
-export default App;
+    return (
+      <HelmetProvider>
+        <QueryClientProvider client={queryClient}>
+          <AuthProvider>
+            <ErrorBoundary>
+              <RouterProvider router={router} />
+            </ErrorBoundary>
+          </AuthProvider>
+        </QueryClientProvider>
+      </HelmetProvider>
+    );
+  }
+  
+  export default App;

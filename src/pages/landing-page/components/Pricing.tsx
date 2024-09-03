@@ -1,63 +1,30 @@
-import * as React from 'react';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Card from '@mui/material/Card';
-import Chip from '@mui/material/Chip';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import Container from '@mui/material/Container';
-import Divider from '@mui/material/Divider';
-import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
-import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
-import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
+import React from 'react';
+import { Box, Container, Grid, Typography, Card, CardContent } from '@mui/material';
+import { FaLeaf, FaFire, FaWater, FaLightbulb } from 'react-icons/fa';
 
-const tiers = [
+const products = [
   {
-    title: 'Free',
-    price: '0',
-    description: [
-      '10 users included',
-      '2 GB of storage',
-      'Help center access',
-      'Email support',
-    ],
-    buttonText: 'Sign up for free',
-    buttonVariant: 'outlined',
+    icon: <FaLeaf size={40} />,
+    description: 'Eco-friendly cookstove designed to reduce carbon emissions.',
   },
   {
-    title: 'Professional',
-    subheader: 'Recommended',
-    price: '15',
-    description: [
-      '20 users included',
-      '10 GB of storage',
-      'Help center access',
-      'Priority email support',
-      'Dedicated team',
-      'Best deals',
-    ],
-    buttonText: 'Start now',
-    buttonVariant: 'contained',
+    icon: <FaFire size={40} />,
+    description: 'High-efficiency stove for optimal cooking performance.',
   },
   {
-    title: 'Enterprise',
-    price: '30',
-    description: [
-      '50 users included',
-      '30 GB of storage',
-      'Help center access',
-      'Phone & email support',
-    ],
-    buttonText: 'Contact us',
-    buttonVariant: 'outlined',
+    icon: <FaWater size={40} />,
+    description: 'Water-saving technology integrated for a sustainable solution.',
+  },
+  {
+    icon: <FaLightbulb size={40} />,
+    description: 'Smart stove with energy-saving features and modern design.',
   },
 ];
 
-export default function Pricing() {
+export default function Products() {
   return (
     <Container
-      id="pricing"
+      id="products"
       sx={{
         pt: { xs: 4, sm: 12 },
         pb: { xs: 8, sm: 16 },
@@ -75,135 +42,37 @@ export default function Pricing() {
         }}
       >
         <Typography component="h2" variant="h4" color="text.primary">
-          Pricing
+          Our Products
         </Typography>
         <Typography variant="body1" color="text.secondary">
-          Quickly build pricing tables for your potential customers with
-          this layout. <br />
-          It&apos;s built with default Material UI components with little
-          customization.
+          Discover our range of innovative products designed to make a positive impact on your life and the environment.
         </Typography>
       </Box>
-      <Grid container spacing={3} alignItems="center" justifyContent="center">
-        {tiers.map((tier) => (
-          <Grid
-            item
-            key={tier.title}
-            xs={12}
-            sm={tier.title === 'Enterprise' ? 12 : 6}
-            md={4}
-          >
+      <Grid container spacing={3} justifyContent="center">
+        {products.map((product, index) => (
+          <Grid item xs={12} sm={6} md={4} key={index}>
             <Card
               sx={{
                 p: 2,
                 display: 'flex',
                 flexDirection: 'column',
-                gap: 4,
-                border: tier.title === 'Professional' ? '1px solid' : undefined,
-                borderColor:
-                  tier.title === 'Professional' ? 'primary.main' : undefined,
-                background:
-                  tier.title === 'Professional'
-                    ? 'linear-gradient(#033363, #021F3B)'
-                    : undefined,
+                alignItems: 'center',
+                gap: 2,
+                backgroundColor: 'white',
+                border: '1px solid',
+                height: '60vh',
+                width: '80%',
+                borderColor: 'grey.300',
               }}
             >
               <CardContent>
-                <Box
-                  sx={{
-                    mb: 1,
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    color: tier.title === 'Professional' ? 'grey.100' : '',
-                  }}
-                >
-                  <Typography component="h3" variant="h6">
-                    {tier.title}
-                  </Typography>
-                  {tier.title === 'Professional' && (
-                    <Chip
-                      icon={<AutoAwesomeIcon />}
-                      label={tier.subheader}
-                      size="small"
-                      sx={{
-                        background: (theme) =>
-                          theme.palette.mode === 'light' ? '' : 'none',
-                        backgroundColor: 'primary.contrastText',
-                        '& .MuiChip-label': {
-                          color: 'primary.dark',
-                        },
-                        '& .MuiChip-icon': {
-                          color: 'primary.dark',
-                        },
-                      }}
-                    />
-                  )}
+                <Box sx={{ mb: 2, color: 'green' }}>
+                  {product.icon}
                 </Box>
-                <Box
-                  sx={{
-                    display: 'flex',
-                    alignItems: 'baseline',
-                    color: tier.title === 'Professional' ? 'grey.50' : undefined,
-                  }}
-                >
-                  <Typography component="h3" variant="h2">
-                    ${tier.price}
-                  </Typography>
-                  <Typography component="h3" variant="h6">
-                    &nbsp; per month
-                  </Typography>
-                </Box>
-                <Divider
-                  sx={{
-                    my: 2,
-                    opacity: 0.2,
-                    borderColor: 'grey.500',
-                  }}
-                />
-                {tier.description.map((line) => (
-                  <Box
-                    key={line}
-                    sx={{
-                      py: 1,
-                      display: 'flex',
-                      gap: 1.5,
-                      alignItems: 'center',
-                    }}
-                  >
-                    <CheckCircleRoundedIcon
-                      sx={{
-                        width: 20,
-                        color:
-                          tier.title === 'Professional'
-                            ? 'primary.light'
-                            : 'primary.main',
-                      }}
-                    />
-                    <Typography
-                      component="text"
-                      variant="subtitle2"
-                      sx={{
-                        color:
-                          tier.title === 'Professional' ? 'grey.200' : undefined,
-                      }}
-                    >
-                      {line}
-                    </Typography>
-                  </Box>
-                ))}
+                <Typography variant="body1" color="text.primary" align="center">
+                  {product.description}
+                </Typography>
               </CardContent>
-              <CardActions>
-                <Button
-                  fullWidth
-                  variant={tier.buttonVariant as 'outlined' | 'contained'}
-                  component="a"
-                  href="/material-ui/getting-started/templates/checkout/"
-                  target="_blank"
-                >
-                  {tier.buttonText}
-                </Button>
-              </CardActions>
             </Card>
           </Grid>
         ))}

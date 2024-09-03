@@ -1,5 +1,6 @@
 import React from 'react';
 import { Grid, FormControl, InputLabel, Select, MenuItem, SelectChangeEvent } from '@mui/material';
+import GoogleMapReact from 'google-map-react';
 import { countries } from '../../../data';
 
 interface Props {
@@ -48,8 +49,31 @@ const LocationInformation: React.FC<Props> = ({
     } as React.ChangeEvent<HTMLInputElement>);
   };
 
-  // Find the country name for the selected code
   const selectedCountryName = countries.find(country => country.code === selectedCountry)?.name || '';
+
+  // Default map options
+  const defaultMapOptions = {
+    zoom: 11,
+    center: {
+      lat: latitude || 0,
+      lng: longitude || 0
+    }
+  };
+
+  // Marker component
+  const Marker = ({ text }: { text: string }) => (
+    <div style={{
+      color: '#fff',
+      background: '#f00',
+      padding: '10px',
+      borderRadius: '50%',
+      textAlign: 'center',
+      fontSize: '12px',
+      fontWeight: 'bold'
+    }}>
+      {text}
+    </div>
+  );
 
   return (
     <>
@@ -124,22 +148,6 @@ const LocationInformation: React.FC<Props> = ({
             {errors.village && <div className="error">{errors.village}</div>}
           </div>
         </Grid>
-        {/* <Grid item xs={12} sm={6}>
-          <div className="form-group">
-            <label htmlFor="village" className="form-label">
-              Ward<span className="required">*</span>:
-            </label>
-            <input
-              type="text"
-              id="village"
-              name="village"
-              className="form-input"
-              value={formValues.village}
-              onChange={handleChange}
-            />
-            {errors.village && <div className="error">{errors.village}</div>}
-          </div>
-        </Grid> */}
       </Grid>
 
       <Grid container spacing={2} alignItems="center" style={{ marginTop: '16px' }}>
@@ -152,16 +160,23 @@ const LocationInformation: React.FC<Props> = ({
             Get Current Location
           </button>
         </Grid>
-        <Grid item xs={12} sm={4}>
-          <div className="form-input" style={{ backgroundColor: 'white', padding: '8px', borderRadius: '4px', marginTop: '8px' }}>
-            <label>Latitude:</label>
-            <span>{latitude !== null ? latitude : 'Not available'}</span>
-          </div>
-        </Grid>
-        <Grid item xs={12} sm={4}>
-          <div className="form-input" style={{ backgroundColor: 'white', padding: '8px', borderRadius: '4px', marginTop: '8px' }}>
-            <label>Longitude:</label>
-            <span>{longitude !== null ? longitude : 'Not available'}</span>
+        <Grid item xs={12} sm={12} style={{ height: '400px', width: '100%', marginTop: '16px' }}>
+          <div style={{ height: '100%', width: '100%' }}>
+            <GoogleMapReact
+              bootstrapURLKeys={{ key: 'AIzaSyCBgUnMhlMWua_5Q_QoylKalTY6HktzYz0' }}
+              defaultCenter={defaultMapOptions.center}
+              defaultZoom={defaultMapOptions.zoom}
+              center={latitude !== null && longitude !== null ? { lat: latitude, lng: longitude } : defaultMapOptions.center}
+              zoom={latitude !== null && longitude !== null ? 15 : defaultMapOptions.zoom}
+            >
+              {latitude !== null && longitude !== null && (
+                <Marker
+                  lat={latitude}
+                  lng={longitude}
+                  text="Current Location"
+                />
+              )}
+            </GoogleMapReact>
           </div>
         </Grid>
       </Grid>

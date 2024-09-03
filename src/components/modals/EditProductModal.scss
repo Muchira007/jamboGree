@@ -1,0 +1,27 @@
+.editProductModal {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  
+    h2 {
+      margin-bottom: 20px;
+    }
+  
+    .modal-actions {
+      margin-top: 20px;
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+  
+    .MuiTextField-root {
+      margin-bottom: 20px;
+    }
+  }
+  

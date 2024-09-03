@@ -39,7 +39,7 @@ export const useSignUp = () => {
       return response.data;
     },
   });
-};
+};  
 
   export const useForgotPassword = () => {
   return useMutation<{ message: string }, Error, { email: string }>({
